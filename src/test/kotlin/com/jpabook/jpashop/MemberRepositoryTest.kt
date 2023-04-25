@@ -23,7 +23,7 @@ class MemberRepositoryTest{
     fun testMember(){
         //given
         val member: Member = Member()
-        member.username = "memberA"
+        member.name = "memberA"
         memberRepository.save(member)
 
         //when
@@ -32,7 +32,7 @@ class MemberRepositoryTest{
 
         //then
         Assertions.assertThat(findMember.id).isEqualTo(member.id)
-        Assertions.assertThat(findMember.username).isEqualTo(member.username)
+        Assertions.assertThat(findMember.name).isEqualTo(member.name)
         Assertions.assertThat(findMember).isEqualTo(member) //JPA 엔티티 동일성 보장
         print("findMember == member: " + {findMember == member})
     }

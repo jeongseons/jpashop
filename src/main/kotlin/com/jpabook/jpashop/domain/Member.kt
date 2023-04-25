@@ -1,11 +1,6 @@
 package com.jpabook.jpashop.domain
 
-import javax.persistence.Column
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 data class Member(
@@ -18,7 +13,7 @@ data class Member(
     @Embedded
     var address: Address = Address(),
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     var orders:List<Order> = listOf()
 
 ) {
