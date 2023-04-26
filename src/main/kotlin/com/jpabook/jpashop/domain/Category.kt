@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Category(
     @Id @GeneratedValue
     @Column(name = "category_id")
-    var id:Long = 0L,
+    var id:Long? = 0L,
 
     var name:String = "",
 

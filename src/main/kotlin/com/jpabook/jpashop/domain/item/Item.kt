@@ -4,25 +4,27 @@ import com.jpabook.jpashop.domain.Category
 import com.jpabook.jpashop.exception.NotEnoughStockException
 import javax.persistence.*
 
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
-abstract class Item(
+abstract class Item {
 
-    @Id @GeneratedValue
-    @Column(name = "item_id")
-    open var id:Long = 0L,
+        @Id
+        @GeneratedValue
+        @Column(name = "item_id")
+        var id: Long? = null
 
-    open var name:String = "",
+        var name: String? = null
 
-    open var price:Int = 0,
+        var price = 0
 
-    open var stockQuantity:Int = 0,
+        var stockQuantity = 0
 
-    @ManyToMany(mappedBy = "items")
-    open var categories:MutableList<Category> = ArrayList()
+        @ManyToMany(mappedBy = "items")
+        private val categories: List<Category> = ArrayList<Category>()
 
-) {
+
     //비즈니스 로직 - 이경우 도메인에 있는 게 관리 쉬움 + 응집력
 
     //stock 증가
@@ -31,7 +33,6 @@ abstract class Item(
     }
 
     //stock 감소
-
     fun removeStock(quantity: Int) {
         var restStock = this.stockQuantity - quantity
         if (restStock < 0 ) {
@@ -40,6 +41,5 @@ abstract class Item(
         this.stockQuantity = restStock
     }
 
-
-
 }
+

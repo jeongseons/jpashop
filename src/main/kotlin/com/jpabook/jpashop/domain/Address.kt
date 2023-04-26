@@ -8,5 +8,4 @@ data class Address(
     var street:String = "",
     var zipcode:String = ""
 ) {
-
 }

@@ -38,7 +38,7 @@ class MemberServiceTest{
 
         //then
         em.flush()
-        assertEquals(member, memberRepository.findOne(saveId))
+        assertEquals(member, memberRepository.findOne(saveId!!))
     }
 
     @Test()
@@ -47,7 +47,6 @@ class MemberServiceTest{
         //given
         val member1 = Member()
         member1.name = "KIM"
-
 
         val member2 = Member()
         member2.name = "KIM"

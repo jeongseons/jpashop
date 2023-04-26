@@ -8,25 +8,26 @@ import javax.persistence.*
 data class Order(
     @Id @GeneratedValue
     @Column(name = "order_id")
-    var id:Long = 0L,
+    var id:Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    var member: Member = Member(),
+    var member: Member? = null,
 
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    var orderItems:List<OrderItem> = ArrayList(),
+    var orderItems:List<OrderItem>? = ArrayList(),
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="delivery_id")
-    var delivery:Delivery,
+    var delivery:Delivery? = null,
 
-    var orderDate:LocalDateTime,
+    var orderDate:LocalDateTime = LocalDateTime.now(),
 
     @Enumerated(EnumType.STRING)
-    var status:OrderStatus
+    var status:OrderStatus = OrderStatus.ORDER
 
 ) {
+
     //==연관관계 메서드==//
     @JvmName("setMember2")
     fun setMember(member: Member) {
@@ -35,7 +36,7 @@ data class Order(
     }
 
     fun addOrderItem(orderItem: OrderItem) {
-        orderItems.plus(orderItem)
+        orderItems?.plus(orderItem)
         orderItem.order = this
     }
 
@@ -49,12 +50,12 @@ data class Order(
     companion object {
         @JvmStatic
         fun createOrder(
-            member: Member?, delivery: Delivery?,
-            vararg orderItems: OrderItem?
+            member: Member, delivery: Delivery,
+            vararg orderItems: OrderItem
         ): Order {
-            lateinit var order: Order
-            order.setMember(member!!)
-            order.setDelivery(delivery!!)
+            var order = Order()
+            order.member = member
+            order.delivery = delivery
             for (orderItem in orderItems) {
                 order.addOrderItem(orderItem!!)
             }
@@ -67,12 +68,12 @@ data class Order(
     //==비즈니스 로직==//
     //주문 취소
     fun cancel() {
-        if (delivery.status == DeliveryStatus.COMP) {
+        if (delivery!!.status == DeliveryStatus.COMP) {
             throw IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.")
         }
 
         this.status = OrderStatus.CANCEL
-        for (orderItem:OrderItem in orderItems) {
+        for (orderItem:OrderItem in orderItems!!) {
             orderItem.cancel()
         }
     }
@@ -81,7 +82,7 @@ data class Order(
     //전체 주문 가격 조회
     fun getTotalPrice():Int {
         var totalPrice = 0
-        for (orderItem:OrderItem in orderItems) {
+        for (orderItem:OrderItem in orderItems!!) {
             totalPrice += orderItem.getTotalPrice()
         }
         return totalPrice
@@ -94,4 +95,5 @@ data class Order(
 
 
 }
+
 

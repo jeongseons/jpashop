@@ -6,6 +6,6 @@ import javax.persistence.Entity
 @Entity
 @DiscriminatorValue("M")
 data class Movie(
-    var director:String = "",
-    var actor:String = ""
+    var director:String="",
+    var actor:String=""
 ):Item()

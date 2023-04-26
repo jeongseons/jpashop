@@ -8,15 +8,15 @@ import javax.persistence.*
 data class OrderItem(
     @Id @GeneratedValue
     @Column(name = "order_item_id")
-    var id:Long = 0L,
+    var id:Long? = 0L,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    var item: Item,
+    var item: Item? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    var order: Order,
+    var order: Order? = null,
 
     var orderPrice:Int = 0, //주문 가격
     var count:Int = 0 //주문 수량
@@ -26,7 +26,7 @@ data class OrderItem(
     companion object {
         @JvmStatic
         fun createOrderItem(item: Item, orderPrice: Int, count: Int): OrderItem {
-            lateinit var orderItem: OrderItem
+            var orderItem = OrderItem()
             orderItem.item = item
             orderItem.orderPrice = orderPrice
             orderItem.count = count
@@ -38,7 +38,7 @@ data class OrderItem(
 
     //==비즈니스 로직==//
     fun cancel() {
-        item.addStock(count)
+        item?.addStock(count)
     }
 
     //==조회 로직==//

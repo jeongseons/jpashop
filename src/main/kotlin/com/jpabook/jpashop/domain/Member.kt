@@ -6,15 +6,15 @@ import javax.persistence.*
 data class Member(
     @Id @GeneratedValue
     @Column(name = "user_id")
-    var id:Long = 0L,
+    var id:Long? = 0L,
 
     var name:String = "",
 
     @Embedded
-    var address: Address = Address(),
+    var address: Address? = null,
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    var orders:List<Order> = listOf()
+    var orders:List<Order> = ArrayList()
 
 ) {
 

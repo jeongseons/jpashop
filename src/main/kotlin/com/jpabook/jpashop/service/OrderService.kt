@@ -1,6 +1,7 @@
 package com.jpabook.jpashop.service
 
 import com.jpabook.jpashop.domain.Delivery
+import com.jpabook.jpashop.domain.DeliveryStatus
 import com.jpabook.jpashop.domain.Order
 import com.jpabook.jpashop.domain.OrderItem
 import com.jpabook.jpashop.repository.ItemRepository
@@ -18,15 +19,14 @@ class OrderService @Autowired constructor(val orderRepository: OrderRepository,
 
     //주문
     @Transactional
-    fun order(memberId:Long, itemId:Long, count:Int):Long {
+    fun order(memberId: Long?, itemId: Long?, count:Int): Long? {
 
         //엔티티 조회
-        val member = memberRepository.findOne(memberId)
-        val item = itemRepository.findOne(itemId)
+        val member = memberRepository.findOne(memberId!!)
+        val item = itemRepository.findOne(itemId!!)
 
         //배송정보 생성
-        lateinit var delivery: Delivery
-        delivery.address = member.address
+        var delivery = Delivery(0, null, member.address!!, DeliveryStatus.READY)
 
         //주문상품 생성
         val orderItem = OrderItem.createOrderItem(item, item.price, count)
@@ -40,9 +40,18 @@ class OrderService @Autowired constructor(val orderRepository: OrderRepository,
         return order.id
     }
 
-
-    //취소
+    //주문 취소
+    @Transactional
+    fun cancelOrder(orderId: Long) {
+        //주문 엔티티 조회
+        val order = orderRepository.findOne(orderId)
+        //주문 취소
+        order.cancel()
+    }
 
     //검색
+//    fun findOrders(orderSearch:OrderSearch):List<Order> {
+//        return orderRepository.findAll(orderSearch)
+//    }
 
 }
