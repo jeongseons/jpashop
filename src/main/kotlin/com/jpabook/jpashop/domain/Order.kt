@@ -1,7 +1,9 @@
 package com.jpabook.jpashop.domain
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import java.time.LocalDateTime
 import javax.persistence.*
+
 
 @Entity
 @Table(name = "orders")
@@ -14,9 +16,11 @@ data class Order(
     @JoinColumn(name = "member_id")
     var member: Member? = null,
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    var orderItems:List<OrderItem>? = ArrayList(),
+    var orderItems:MutableList<OrderItem> = ArrayList(),
 
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="delivery_id")
     var delivery:Delivery? = null,
@@ -24,7 +28,7 @@ data class Order(
     var orderDate:LocalDateTime = LocalDateTime.now(),
 
     @Enumerated(EnumType.STRING)
-    var status:OrderStatus = OrderStatus.ORDER
+    var status:OrderStatus? = null
 
 ) {
 
@@ -37,6 +41,7 @@ data class Order(
 
     fun addOrderItem(orderItem: OrderItem) {
         orderItems?.plus(orderItem)
+        println("test-addorderitem:$orderItem")
         orderItem.order = this
     }
 
@@ -54,8 +59,8 @@ data class Order(
             vararg orderItems: OrderItem
         ): Order {
             var order = Order()
-            order.member = member
-            order.delivery = delivery
+            order.setMember(member)
+            order.setDelivery(delivery)
             for (orderItem in orderItems) {
                 order.addOrderItem(orderItem!!)
             }
@@ -86,14 +91,9 @@ data class Order(
             totalPrice += orderItem.getTotalPrice()
         }
         return totalPrice
-
 //        return orderItems.stream()
 //            .mapToInt(OrderItem::getTotalPrice)
 //            .sum()
     }
 
-
-
 }
-
-

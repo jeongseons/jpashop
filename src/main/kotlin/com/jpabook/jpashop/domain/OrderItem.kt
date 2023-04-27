@@ -1,5 +1,6 @@
 package com.jpabook.jpashop.domain
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.jpabook.jpashop.domain.item.Item
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -14,6 +15,7 @@ data class OrderItem(
     @JoinColumn(name = "item_id")
     var item: Item? = null,
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     var order: Order? = null,

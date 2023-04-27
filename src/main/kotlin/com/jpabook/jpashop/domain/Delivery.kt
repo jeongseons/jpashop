@@ -1,5 +1,6 @@
 package com.jpabook.jpashop.domain
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import javax.persistence.*
 
 @Entity
@@ -8,6 +9,7 @@ data class Delivery(
     @Column(name = "delivery_id")
     var id:Long? = 0L,
 
+    @JsonBackReference
     @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     var order: Order?,
 
@@ -15,7 +17,7 @@ data class Delivery(
     var address: Address,
 
     @Enumerated(EnumType.STRING)
-    var status:DeliveryStatus = DeliveryStatus.COMP
+    var status:DeliveryStatus = DeliveryStatus.READY
 
 ) {
 
