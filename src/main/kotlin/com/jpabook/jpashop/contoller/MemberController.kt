@@ -27,9 +27,9 @@ class MemberController(private val memberService: MemberService) {
             return "members/createMemberForm"
         }
 
-        val address = Address(form.city!!, form.street!!, form.zipcode!!)
+        val address = Address(form.city, form.street, form.zipcode)
 
-        val member = Member(null, form.name!!, address)
+        val member = Member(null, form.name, address)
 
         memberService.join(member)
         return "redirect:/"

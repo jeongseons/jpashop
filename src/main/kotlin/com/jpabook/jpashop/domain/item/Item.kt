@@ -17,7 +17,7 @@ abstract class Item {
         @Column(name = "item_id")
         var id: Long? = null
 
-        var name: String? = null
+        var name: String = ""
 
         var price = 0
 
