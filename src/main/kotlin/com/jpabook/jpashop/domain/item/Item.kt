@@ -2,12 +2,14 @@ package com.jpabook.jpashop.domain.item
 
 import com.jpabook.jpashop.domain.Category
 import com.jpabook.jpashop.exception.NotEnoughStockException
+import com.jpabook.jpashop.utill.AllOpen
 import javax.persistence.*
 
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
+@AllOpen
 abstract class Item {
 
         @Id

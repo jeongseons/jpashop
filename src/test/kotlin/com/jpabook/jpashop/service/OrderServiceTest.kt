@@ -33,9 +33,7 @@ class OrderServiceTest {
     fun orderTest() {
         //given
         var member = createMember()
-
         var book:Item = createBook("시골 JPA", 10000, 10)
-
         val orderCount = 2
 
         //when
@@ -53,7 +51,7 @@ class OrderServiceTest {
         assertEquals(OrderStatus.ORDER, getOrder.status) //상품 주문시 상태 ORDER
         assertEquals(8,book.stockQuantity) //주문 수량만큼 재고가 줄어야 함
         assertEquals(10000 * orderCount, getOrder.getTotalPrice()) //주문 가격은 가격 * 수량
-        assertEquals(1, getOrder.orderItems!!.size) //주문한 상품 종류 수가 정확해야 함
+        assertEquals(1, getOrder.orderItems.size) //주문한 상품 종류 수가 정확해야 함
     }
 
     @Test
