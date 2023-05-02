@@ -3,10 +3,9 @@ package com.jpabook.jpashop.repository
 import com.jpabook.jpashop.domain.item.Item
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 
 @Repository
-class ItemRepository (@PersistenceContext val em:EntityManager) {
+class ItemRepository (val em:EntityManager) {
 
     fun save(item: Item) {
         if(item.id==null){

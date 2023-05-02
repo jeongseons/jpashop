@@ -6,7 +6,7 @@ import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 @Repository
-class MemberRepository(@PersistenceContext val em:EntityManager) {
+class MemberRepository(val em:EntityManager) {
 
     fun save(member:Member) {
         em.persist(member)

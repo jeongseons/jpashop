@@ -8,14 +8,22 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class ItemService(@Autowired val itemRepository: ItemRepository) {
+class ItemService(val itemRepository: ItemRepository) {
 
     @Transactional
     fun saveItem(item: Item) {
         itemRepository.save(item)
     }
 
-    fun findItem():List<Item> {
+    @Transactional
+    fun updateItem(itemId: Long, item: Item) {
+        var updateItem = itemRepository.findOne(itemId!!)
+        updateItem.name = item.name
+        updateItem.price = item.price
+        updateItem.stockQuantity = item.stockQuantity
+    }
+
+    fun findItems():List<Item> {
         return itemRepository.findAll()
     }
 

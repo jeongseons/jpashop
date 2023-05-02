@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class MemberService(@Autowired val memberRepository: MemberRepository) {
+class MemberService(val memberRepository: MemberRepository) {
 
     //회원 가입
     @Transactional

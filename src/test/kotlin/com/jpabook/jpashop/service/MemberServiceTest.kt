@@ -17,6 +17,8 @@ import kotlin.IllegalStateException
 @Transactional //테스트에 있을 시 기본적으로 롤백 실행
 class MemberServiceTest{
 
+    //autowired를 지양하라
+    //setter, 생성자
     @Autowired
     lateinit var memberService: MemberService
 

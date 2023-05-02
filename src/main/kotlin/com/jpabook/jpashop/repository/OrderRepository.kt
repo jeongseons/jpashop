@@ -4,7 +4,7 @@ import com.jpabook.jpashop.domain.Order
 import com.jpabook.jpashop.domain.OrderStatus
 import org.springframework.stereotype.Repository
 import org.springframework.util.StringUtils
-import java.util.Objects
+import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.criteria.JoinType
 import javax.persistence.criteria.Predicate
@@ -83,9 +83,19 @@ class OrderRepository(val em:EntityManager) {
 
         cq.where(cb.and(*criteria.toTypedArray()))
 
-        val query = em.createQuery(cq).setMaxResults(1000) //최대 1000건
+        var query = em.createQuery(cq).setMaxResults(1000) //최대 1000건
+
+
+        if (orderSearch.orderStatus != null) {
+            query = query.setParameter("status", orderSearch.orderStatus)
+        }
+        if (StringUtils.hasText(orderSearch.memberName)) {
+            query = query.setParameter("name", orderSearch.memberName)
+        }
 
         return query.resultList
+
+
 
     }
 

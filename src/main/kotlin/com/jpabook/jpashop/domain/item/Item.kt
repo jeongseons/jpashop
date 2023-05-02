@@ -20,8 +20,20 @@ abstract class Item {
         var name: String = ""
 
         var price = 0
+            set(value) {
+                if (price < 0) {
+                    throw IllegalArgumentException("상품 가격이 0원 이하이면 안 됨")
+                }
+                field = value
+            }
 
         var stockQuantity = 0
+            set(value) {
+                if (stockQuantity < 0) {
+                    throw IllegalArgumentException("상품 재고 수량이 0개 이하이면 안 됨")
+                }
+                field = value
+            }
 
         @ManyToMany(mappedBy = "items")
         private val categories: List<Category> = ArrayList<Category>()
